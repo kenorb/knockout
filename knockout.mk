@@ -13,14 +13,14 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=s0ck3t
-Date                   :=2012-10-29
+Date                   :=2013-01-12
 CodeLitePath           :="d:\CodeLite"
-LinkerName             :=g++
-SharedObjectLinkerName :=g++ -shared -fPIC
+LinkerName             :=gcc
+SharedObjectLinkerName :=gcc -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
 PreprocessSuffix       :=.o.i
-DebugSwitch            :=-gstab
+DebugSwitch            :=-g 
 IncludeSwitch          :=-I
 LibrarySwitch          :=-l
 OutputSwitch           :=-o 
@@ -35,12 +35,12 @@ PreprocessOnlySwitch   :=-E
 ObjectsFileList        :="D:\prj\cl workspace\knockout\knockout.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=makedir
-LinkOptions            :=  -ggdb -Wl,-pie -pedantic
+LinkOptions            :=  -Wl,-pie -O3
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch). 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := $(LibrarySwitch)psapi 
-ArLibs                 :=  "psapi" 
+Libs                   := $(LibrarySwitch)psapi $(LibrarySwitch)imagehlp 
+ArLibs                 :=  "psapi" "imagehlp" 
 LibPath                := $(LibraryPathSwitch). 
 
 ##
@@ -48,10 +48,10 @@ LibPath                := $(LibraryPathSwitch).
 ## AR, CXX, CC, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
 AR       := ar rcus
-CXX      := g++
+CXX      := gcc
 CC       := gcc
-CXXFLAGS :=  -ggdb -Wall -pedantic $(Preprocessors)
-CFLAGS   :=  -ggdb -Wall -pedantic $(Preprocessors)
+CXXFLAGS :=  -Wl,-pie -O3 $(Preprocessors)
+CFLAGS   :=  -Wl,-pie -O3 $(Preprocessors)
 
 
 ##
@@ -62,7 +62,7 @@ UNIT_TEST_PP_SRC_DIR:=e:\UnitTest++-1.3
 WXWIN:=e:\wxWidgets-2.8.12
 PATH:=$(WXWIN)\lib\gcc_dll;$(PATH)
 WXCFG:=gcc_dll\mswu
-Objects=$(IntermediateDirectory)/knockout$(ObjectSuffix) $(IntermediateDirectory)/scit$(ObjectSuffix) 
+Objects=$(IntermediateDirectory)/knockout$(ObjectSuffix) $(IntermediateDirectory)/libdasm-beta_libdasm$(ObjectSuffix) 
 
 ##
 ## Main Build Targets 
@@ -85,21 +85,21 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/knockout$(ObjectSuffix): knockout.cpp $(IntermediateDirectory)/knockout$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "D:/prj/cl workspace/knockout/knockout.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/knockout$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/knockout$(DependSuffix): knockout.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/knockout$(ObjectSuffix) -MF$(IntermediateDirectory)/knockout$(DependSuffix) -MM "D:/prj/cl workspace/knockout/knockout.cpp"
+$(IntermediateDirectory)/knockout$(ObjectSuffix): knockout.c $(IntermediateDirectory)/knockout$(DependSuffix)
+	$(CC) $(SourceSwitch) "D:/prj/cl workspace/knockout/knockout.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/knockout$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/knockout$(DependSuffix): knockout.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/knockout$(ObjectSuffix) -MF$(IntermediateDirectory)/knockout$(DependSuffix) -MM "D:/prj/cl workspace/knockout/knockout.c"
 
-$(IntermediateDirectory)/knockout$(PreprocessSuffix): knockout.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/knockout$(PreprocessSuffix) "D:/prj/cl workspace/knockout/knockout.cpp"
+$(IntermediateDirectory)/knockout$(PreprocessSuffix): knockout.c
+	@$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/knockout$(PreprocessSuffix) "D:/prj/cl workspace/knockout/knockout.c"
 
-$(IntermediateDirectory)/scit$(ObjectSuffix): scit.c $(IntermediateDirectory)/scit$(DependSuffix)
-	$(CC) $(SourceSwitch) "D:/prj/cl workspace/knockout/scit.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/scit$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/scit$(DependSuffix): scit.c
-	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/scit$(ObjectSuffix) -MF$(IntermediateDirectory)/scit$(DependSuffix) -MM "D:/prj/cl workspace/knockout/scit.c"
+$(IntermediateDirectory)/libdasm-beta_libdasm$(ObjectSuffix): libdasm-beta/libdasm.c $(IntermediateDirectory)/libdasm-beta_libdasm$(DependSuffix)
+	$(CC) $(SourceSwitch) "D:/prj/cl workspace/knockout/libdasm-beta/libdasm.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/libdasm-beta_libdasm$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/libdasm-beta_libdasm$(DependSuffix): libdasm-beta/libdasm.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/libdasm-beta_libdasm$(ObjectSuffix) -MF$(IntermediateDirectory)/libdasm-beta_libdasm$(DependSuffix) -MM "D:/prj/cl workspace/knockout/libdasm-beta/libdasm.c"
 
-$(IntermediateDirectory)/scit$(PreprocessSuffix): scit.c
-	@$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/scit$(PreprocessSuffix) "D:/prj/cl workspace/knockout/scit.c"
+$(IntermediateDirectory)/libdasm-beta_libdasm$(PreprocessSuffix): libdasm-beta/libdasm.c
+	@$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/libdasm-beta_libdasm$(PreprocessSuffix) "D:/prj/cl workspace/knockout/libdasm-beta/libdasm.c"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
@@ -110,9 +110,9 @@ clean:
 	$(RM) $(IntermediateDirectory)/knockout$(ObjectSuffix)
 	$(RM) $(IntermediateDirectory)/knockout$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/knockout$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/scit$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/scit$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/scit$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/libdasm-beta_libdasm$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/libdasm-beta_libdasm$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/libdasm-beta_libdasm$(PreprocessSuffix)
 	$(RM) $(OutputFile)
 	$(RM) $(OutputFile).exe
 	$(RM) "D:\prj\cl workspace\.build-debug\knockout"

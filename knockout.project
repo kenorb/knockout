@@ -8,9 +8,12 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="knockout.cpp"/>
-    <File Name="scit.c"/>
-    <File Name="scit.h"/>
+    <File Name="knockout.c"/>
+    <VirtualDirectory Name="libdasm-beta">
+      <File Name="libdasm-beta/opcode_tables.h"/>
+      <File Name="libdasm-beta/libdasm.c"/>
+      <File Name="libdasm-beta/libdasm.h"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -22,15 +25,16 @@
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
-    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-ggdb;-Wall;-pedantic" C_Options="-ggdb;-Wall;-pedantic" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
+    <Configuration Name="Debug" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wl,-pie -O3" C_Options="-Wl,-pie -O3" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" UseDifferentPCHFlags="no" PCHFlags="">
         <IncludePath Value="."/>
       </Compiler>
-      <Linker Options="-ggdb -Wl,-pie -pedantic" Required="yes">
+      <Linker Options="-Wl,-pie -O3" Required="yes">
         <Library Value="psapi"/>
+        <Library Value="imagehlp"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="ex4_to_mq4_demo.exe" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="test.exe" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -99,4 +103,6 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>
